@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculateur de Subathon</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      input,
+      button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+      }
+      .result {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Calculateur de Subathon</h1>
+      <label for="subValue">Valeur d'une sub (en secondes):</label>
+      <input type="number" id="subValue" required />
+
+      <label for="startDate">Date de début:</label>
+      <input type="date" id="startDate" required />
+
+      <label for="startTime">Heure de début:</label>
+      <input type="time" id="startTime" required />
+
+      <button onclick="calculateSubathon()">Calculer le planning</button>
+
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      function calculateSubathon() {
+        const subValue = parseInt(document.getElementById("subValue").value);
+        const startDate = document.getElementById("startDate").value;
+        const startTime = document.getElementById("startTime").value;
+
+        if (isNaN(subValue) || !startDate || !startTime) {
+          alert("Veuillez remplir tous les champs.");
+          return;
+        }
+
+        let startDateTime = new Date(`${startDate}T${startTime}`);
+        const now = new Date();
+        if (startDateTime < now) {
+          alert("La date et l'heure de début doivent être dans le futur.");
+          return;
+        }
+
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = "";
+
+        let cumulativeSubs = 0;
+
+        for (let day = 1; day <= 30; day++) {
+          startDateTime.setDate(startDateTime.getDate() + 1);
+          const dailySeconds = 86400; // 24 heures en secondes
+          const subsNeeded = Math.ceil(dailySeconds / subValue);
+          cumulativeSubs += subsNeeded;
+          resultDiv.innerHTML += `<p>Jour ${day}: ${cumulativeSubs} subs cumulés nécessaires</p>`;
+        }
+      }
+    </script>
+  </body>
+</html>
