@@ -66,10 +66,14 @@
         let cumulativeSubs = 0;
 
         for (let day = 1; day <= 30; day++) {
-          startDateTime.setDate(startDateTime.getDate() + 1);
-          const dailySeconds = 86400; // 24 heures en secondes
-          const subsNeeded = Math.ceil(dailySeconds / subValue);
-          cumulativeSubs += subsNeeded;
+          if (day === 1) {
+            // Premier jour de 24 heures de live
+            cumulativeSubs += 0; // Pas de subs nécessaires pour le premier jour
+          } else {
+            const dailySeconds = 86400; // 24 heures en secondes
+            const subsNeeded = Math.ceil(dailySeconds / subValue);
+            cumulativeSubs += subsNeeded;
+          }
           resultDiv.innerHTML += `<p>Jour ${day}: ${cumulativeSubs} subs cumulés nécessaires</p>`;
         }
       }
